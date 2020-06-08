@@ -30,7 +30,7 @@ public class PlayerFire : MonoBehaviour
     void Update()
     {
         //Fire();
-        FireRay();
+        //FireRay();
         //레이져 보여주는 기능이 활성화 되어 있을때만
         //레이져를 보여준다
         //일정시간이 지나면 레이져 보여주는 기능 비활성화
@@ -47,23 +47,23 @@ public class PlayerFire : MonoBehaviour
         }
     }
 
-    //private void Fire()
-    //{
-    //    //마우스왼쪽버튼 or 왼쪽컨트롤 키
-    //    if(Input.GetButtonDown("Fire1"))
-    //    {
-    //        //총알공장(총알프리팹)에서 총알을 무한대로 찍어낼 수 있다
-    //        //Instantiate() 함수로 프리팹 파일을 게임오브젝트로 만든다
-    //
-    //        //총알 게임오브젝트 생성
-    //        GameObject bullet = Instantiate(bulletFactory);
-    //        //총알 오브젝트의 위치 지정
-    //        //bullet.transform.position = transform.position;
-    //        bullet.transform.position = firePoint.transform.position;
-    //    }
-    //}
+    public void Fire()
+    {
+        //마우스왼쪽버튼 or 왼쪽컨트롤 키
+        if(Input.GetButtonDown("Fire1"))
+        {
+            //총알공장(총알프리팹)에서 총알을 무한대로 찍어낼 수 있다
+            //Instantiate() 함수로 프리팹 파일을 게임오브젝트로 만든다
+    
+            //총알 게임오브젝트 생성
+            GameObject bullet = Instantiate(bulletFactory);
+            //총알 오브젝트의 위치 지정
+            //bullet.transform.position = transform.position;
+            bullet.transform.position = firePoint.transform.position;
+        }
+    }
 
-    private void FireRay()
+    public void FireRay()
     {
         //마우스왼쪽버튼 or 왼쪽컨트롤 키
         if (Input.GetButtonDown("Fire1"))
@@ -105,5 +105,15 @@ public class PlayerFire : MonoBehaviour
                 lr.SetPosition(1, transform.position + Vector3.up * 10);
             }
         }
+    }
+
+    //파이어 버튼클릭
+    public void OnFireButtonClick()
+    {
+        //총알 게임오브젝트 생성
+        GameObject bullet = Instantiate(bulletFactory);
+        //총알 오브젝트의 위치 지정
+        //bullet.transform.position = transform.position;
+        bullet.transform.position = firePoint.transform.position;
     }
 }

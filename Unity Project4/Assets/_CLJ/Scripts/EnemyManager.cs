@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemyManager : MonoBehaviour
 {
     //에너미매니저 역할?
@@ -43,4 +44,6 @@ public class EnemyManager : MonoBehaviour
             //enemy.transform.position = transform.GetChild(index).position;
         }
     }
+
+    
 }
