@@ -184,8 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
-  scoreTxt: {fileID: 0}
-  highScoreTxt: {fileID: 0}
+  fxFactory: {fileID: 100006, guid: e076683e0305e35498b8e8834978c0fa, type: 3}
 --- !u!54 &7259060896717821679
 Rigidbody:
   m_ObjectHideFlags: 0

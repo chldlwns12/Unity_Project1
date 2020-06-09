@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     //위에서 아래로 떨어지기만 한다 (똥피하기 느낌)
     //충돌처리 (에너미랑 플레이어, 에너미랑 플레이어 총알)
     public float speed = 10.0f;
-
+    public GameObject fxFactory;
     
 
     // Update is called once per frame
@@ -25,6 +25,15 @@ public class Enemy : MonoBehaviour
         //Destroy(gameObject, 1.0f);    //1초후에 사라진다.
         Destroy(gameObject);
         Destroy(collision.gameObject);
+
+        ShowEffect();
+
         ScoreManager.instance.EnemyKill();
+    }
+
+    void ShowEffect()
+    {
+        GameObject fx = Instantiate(fxFactory);
+        fxFactory.transform.position = transform.position;
     }
 }

@@ -17,6 +17,9 @@ public class PlayerFire : MonoBehaviour
     public float rayTime = 0.3f;
     float timer = 0.0f;
 
+    //사운드 재생
+    AudioSource audio;
+
     void Start()
     {
         //라인랜더러 컴포넌트 추가
@@ -24,13 +27,16 @@ public class PlayerFire : MonoBehaviour
         //중요!!!
         //게임오브젝트는 활성화 비활성화 => SetActive() 함수사용
         //컴포넌트는 enabled 속성 사용
+
+        //오디오소스 컴포넌트 캐스팅
+        audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //Fire();
-        //FireRay();
+        FireRay();
         //레이져 보여주는 기능이 활성화 되어 있을때만
         //레이져를 보여준다
         //일정시간이 지나면 레이져 보여주는 기능 비활성화
@@ -68,6 +74,9 @@ public class PlayerFire : MonoBehaviour
         //마우스왼쪽버튼 or 왼쪽컨트롤 키
         if (Input.GetButtonDown("Fire1"))
         {
+            //레이져 사운드 재생
+            audio.Play();
+
             //라인렌더러 컴포넌트 활성화
             lr.enabled = true;
             //라인 시작점, 끝점
