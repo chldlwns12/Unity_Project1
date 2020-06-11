@@ -25,7 +25,8 @@ public class Enemy : MonoBehaviour
         //Destroy(gameObject, 1.0f);    //1초후에 사라진다.
         if (collision.gameObject.name.Contains("Bullet"))
         {
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
             Destroy(gameObject);
 
             ShowEffect();
@@ -37,6 +38,6 @@ public class Enemy : MonoBehaviour
     void ShowEffect()
     {
         GameObject fx = Instantiate(fxFactory);
-        fxFactory.transform.position = transform.position;
+        fx.transform.position = transform.position;
     }
 }

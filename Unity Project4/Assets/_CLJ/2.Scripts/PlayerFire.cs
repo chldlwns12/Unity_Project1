@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using VolumetricLines;
 
 public class PlayerFire : MonoBehaviour
 {
     public GameObject bulletFactory;    //총알 프리팹
     public GameObject firePoint;         //총알 발사위치
+
+    public GameObject laser;
 
     public float distance = 10.0f;
 
@@ -81,7 +84,7 @@ public class PlayerFire : MonoBehaviour
     void Update()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
-        Fire();
+        //Fire();
         //FireRay();
         //레이져 보여주는 기능이 활성화 되어 있을때만
         //레이져를 보여준다
@@ -214,32 +217,51 @@ public class PlayerFire : MonoBehaviour
     //파이어 버튼클릭
     public void OnFireButtonClick()
     {
+        if (bulletPool.Count > 0)
+        {
+            GameObject bullet = bulletPool.Dequeue();
+            bullet.SetActive(true);
+            bullet.transform.position = firePoint.transform.position;
+            bullet.transform.up = firePoint.transform.up;
+        }
+        else
+        {
+            //총알 오브젝트 생성한다
+            GameObject bullet = Instantiate(bulletFactory);
+            bullet.SetActive(false);
+            //생성된 총알 오브젝트를 풀에 담는다.
+            bulletPool.Enqueue(bullet);
+        }
+    }
+
+    public void OnLaserButtonClick()
+    {
         //레이져 사운드 재생
         audio.Play();
-
-        ////라인렌더러 컴포넌트 활성화
+        
+        //라인렌더러 컴포넌트 활성화
         lr.enabled = true;
         //라인 시작점, 끝점
         lr.SetPosition(0, transform.position);
         //lr.SetPosition(1, transform.position + Vector3.up * distance);
         //라인의 끝점은 충돌된 지점으로 변경한다
-        
+
         //Ray로 충돌처리
         Ray ray = new Ray(transform.position, transform.up);
         RaycastHit hitInfo; //Ray와 충돌된 오브젝트의 정보를 담는다
-                            //Ray랑 충돌된 오브젝트가 있다
+        //Ray랑 충돌된 오브젝트가 있다
         if (Physics.Raycast(ray, out hitInfo))
         {
             //레이져의 끝점 지정
             lr.SetPosition(1, hitInfo.point);
-            
+
             //디스트로이존의 탑과는 충돌처리 되지 않도록 한다
             //if(hitInfo.collider.name != "Top")
             //{
             //    Destroy(hitInfo.collider.gameObject);
             //}
-        
-        
+
+
             //충돌된 오브젝트 삭제
             //프리팹으로 만든 오브젝트 같은경우는 생성될때 클론으로 생성된다
             //Contains("Enemy") => Enemy(clone) 이런것도 포함함

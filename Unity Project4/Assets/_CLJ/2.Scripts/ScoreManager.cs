@@ -27,7 +27,7 @@ public class ScoreManager : MonoBehaviour
 
     private void Update()
     {
-        if(score > 10)
+        if(score > 200)
         {
             boss.SetActive(true);
         }

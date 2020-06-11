@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 7259060896717821679}
   m_Layer: 9
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -185,9 +185,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   fxFactory: {fileID: 100006, guid: e076683e0305e35498b8e8834978c0fa, type: 3}
-  hpBarPrefab: {fileID: 1158310885941553133, guid: d47dede880a1dbc4a97cc3a7728fbcf7,
-    type: 3}
-  hpBarOffset: {x: 0, y: 2.2, z: 0}
 --- !u!54 &7259060896717821679
 Rigidbody:
   m_ObjectHideFlags: 0
