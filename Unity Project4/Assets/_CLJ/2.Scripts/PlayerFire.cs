@@ -10,15 +10,20 @@ public class PlayerFire : MonoBehaviour
     public GameObject bulletFactory;    //총알 프리팹
     public GameObject firePoint;         //총알 발사위치
 
-    public GameObject laser;
+    GameObject laser;
+    VolumetricLineBehavior laserInfo;
+
+    public GameObject laserEffect;
+    public float EffectTime = 1.0f;
+    float EffectTimer = 0.0f;
 
     public float distance = 10.0f;
 
     //레이저를 발사하기 위해서는 라인랜더러가 필요하다
     //선은 최소 2개의 점이 필요하다(시작점, 끝점)
-    LineRenderer lr;    //라인랜더러 컴포넌트
+    //LineRenderer lr;    //라인랜더러 컴포넌트
     //일정시간동안만 레이져 보여주기
-    public float rayTime = 0.3f;
+    public float rayTime = 0.4f;
     float timer = 0.0f;
 
     //사운드 재생
@@ -38,7 +43,7 @@ public class PlayerFire : MonoBehaviour
     void Start()
     {
         //라인랜더러 컴포넌트 추가
-        lr = GetComponent<LineRenderer>();
+        //lr = GetComponent<LineRenderer>();
         //중요!!!
         //게임오브젝트는 활성화 비활성화 => SetActive() 함수사용
         //컴포넌트는 enabled 속성 사용
@@ -48,6 +53,9 @@ public class PlayerFire : MonoBehaviour
 
         //오브젝트 풀링 초기화
         InitObjectPooling();
+
+        laser = transform.Find("Laser").gameObject;
+        laserInfo = laser.GetComponent<VolumetricLineBehavior>();
     }
 
     private void InitObjectPooling()
@@ -83,13 +91,30 @@ public class PlayerFire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject()) return;
         //Fire();
         //FireRay();
         //레이져 보여주는 기능이 활성화 되어 있을때만
         //레이져를 보여준다
         //일정시간이 지나면 레이져 보여주는 기능 비활성화
-        if (lr.enabled) showRay();
+        //if (lr.enabled) showRay();
+
+        if(laser.activeSelf == true)
+        {
+            showRay();
+            if (timer < rayTime)
+            {
+                laserInfo.LineWidth += 0.05f;
+                if (laserInfo.LineWidth >= 0.5f)
+                {
+                    laserInfo.LineWidth = 0.5f;
+                }
+                laserInfo.LightSaberFactor -= 0.05f;
+                if (laserInfo.LightSaberFactor <= 0.5f)
+                {
+                    laserInfo.LightSaberFactor = 0.5f;
+                }
+            }
+        }
     }
 
     private void showRay()
@@ -97,8 +122,19 @@ public class PlayerFire : MonoBehaviour
         timer += Time.deltaTime;
         if(timer > rayTime)
         {
-            lr.enabled = false;
-            timer = 0.0f;
+            //lr.enabled = false;
+            laserInfo.LineWidth -= 0.05f;
+            if (laserInfo.LineWidth <= 0.1f)
+            {
+                laserInfo.LineWidth = 0.1f;
+            }
+            laserInfo.LightSaberFactor += 0.05f;
+            if (laserInfo.LightSaberFactor >= 1.0f)
+            {
+                laser.SetActive(false);
+                laserEffect.SetActive(false);
+                timer = 0.0f;
+            }
         }
     }
 
@@ -240,11 +276,14 @@ public class PlayerFire : MonoBehaviour
         audio.Play();
         
         //라인렌더러 컴포넌트 활성화
-        lr.enabled = true;
+        //lr.enabled = true;
         //라인 시작점, 끝점
-        lr.SetPosition(0, transform.position);
+        //lr.SetPosition(0, transform.position);
         //lr.SetPosition(1, transform.position + Vector3.up * distance);
         //라인의 끝점은 충돌된 지점으로 변경한다
+
+        laser.SetActive(true);
+        laserEffect.SetActive(true);
 
         //Ray로 충돌처리
         Ray ray = new Ray(transform.position, transform.up);
@@ -253,14 +292,14 @@ public class PlayerFire : MonoBehaviour
         if (Physics.Raycast(ray, out hitInfo))
         {
             //레이져의 끝점 지정
-            lr.SetPosition(1, hitInfo.point);
-
+            //lr.SetPosition(1, hitInfo.point);
+            laserInfo.EndPos = new Vector3(0, 9.5f - (5.5f - hitInfo.point.y), 0);
+            //laserInfo.SetStartAndEndPoints(transform.position, hitInfo.point);
             //디스트로이존의 탑과는 충돌처리 되지 않도록 한다
             //if(hitInfo.collider.name != "Top")
             //{
             //    Destroy(hitInfo.collider.gameObject);
             //}
-
 
             //충돌된 오브젝트 삭제
             //프리팹으로 만든 오브젝트 같은경우는 생성될때 클론으로 생성된다
@@ -273,7 +312,8 @@ public class PlayerFire : MonoBehaviour
         else
         {
             //충돌된 오브젝트가 없으니 끝점을 정해준다
-            lr.SetPosition(1, transform.position + Vector3.up * 10);
+            //lr.SetPosition(1, transform.position + Vector3.up * 10);
+            laserInfo.EndPos = new Vector3(0, 9.5f, 0);
         }
     }
 }

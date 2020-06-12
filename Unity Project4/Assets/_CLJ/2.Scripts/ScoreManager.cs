@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,6 +24,7 @@ public class ScoreManager : MonoBehaviour
         highScore = PlayerPrefs.GetInt("HighScore", 0);
         highScoreTxt.text = "High Score : " + highScore.ToString("0");
     }
+
 
     private void Update()
     {

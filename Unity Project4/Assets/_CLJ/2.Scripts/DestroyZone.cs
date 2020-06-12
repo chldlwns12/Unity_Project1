@@ -28,7 +28,7 @@ public class DestroyZone : MonoBehaviour
         
         //3. Queue
         //충돌된 오브젝트가 총알이라면 총알풀에 추가한다
-        if(other.gameObject.name.Contains("Bullet"))
+        if(other.gameObject.name.Contains("Bullet2"))
         {
             //총알 오브젝트는 비활성화 시킨다
             other.gameObject.SetActive(false);

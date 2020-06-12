@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
         //자기자신도 없애고
         //충돌된 오브젝트도 없앤다
         //Destroy(gameObject, 1.0f);    //1초후에 사라진다.
-        if (collision.gameObject.name.Contains("Bullet"))
+        if (collision.gameObject.name.Contains("Bullet2"))
         {
             //Destroy(collision.gameObject);
             collision.gameObject.SetActive(false);
